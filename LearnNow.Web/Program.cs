@@ -1,7 +1,30 @@
+using LearnNow;
+using LearnNow.Class;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+//Configura DBContext para la base de datos
+builder.Services.AddDbContext<LearnNowDB>(options => options.UseSqlServer
+(builder.Configuration.GetConnectionString("DeafaulConnnections")));
+
+//Configuracion de identity
+builder.Services.AddIdentity<IdentityUser,IdentityRole>()
+    .AddEntityFrameworkStores<LearnNowDB>()
+    .AddDefaultTokenProviders();
+
+//Configuracion de cookies para autenticador 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccesDenied";
+});
+
 
 var app = builder.Build();
 
@@ -18,8 +41,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapDefaultControllerRoute();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
