@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
+builder.Services.AddRazorPages();
+builder.Services.AddScoped(typeof(IRepositoryGeneric<>), typeof(RepositoryGeneric<>));
+builder.Services.AddScoped<TrainingEventRepository>();
 
 //Configura DBContext para la base de datos
 builder.Services.AddDbContext<LearnNowDB>(options => options.UseSqlServer
-(builder.Configuration.GetConnectionString("DeafaulConnnections")));
+(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Configuracion de identity
 builder.Services.AddIdentity<IdentityUser,IdentityRole>()
@@ -24,6 +25,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Auth/Login";
     options.AccessDeniedPath = "/Auth/AccesDenied";
 });
+
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 
 var app = builder.Build();

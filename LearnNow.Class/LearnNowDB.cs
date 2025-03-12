@@ -17,6 +17,7 @@ namespace LearnNow.Class
 
         public DbSet<TeacherModel> Teachers { get; set; }   
         public DbSet<TraineeModel> Trainees { get; set; }   
+        public DbSet<TrainingEventModel> TrainingEvents { get; set; }
         
         public LearnNowDB(DbContextOptions<LearnNowDB> options ):base(options) { }
 

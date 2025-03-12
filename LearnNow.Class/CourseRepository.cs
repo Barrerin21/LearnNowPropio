@@ -25,7 +25,7 @@ namespace LearnNow.Class
             return course.Id;
         }
 
-        public void Deleat(int id)
+        public void Delete(int id)
         {
             var c= new CourseModel { Id = id };
             db.Courses.Attach(c);

@@ -7,7 +7,7 @@ public class LearnNowDBContextFactory : IDesignTimeDbContextFactory<LearnNowDB>
      LearnNowDB IDesignTimeDbContextFactory<LearnNowDB>.CreateDbContext(string[] args)
     {
         var optionBuilder = new DbContextOptionsBuilder<LearnNowDB>();
-        optionBuilder.UseSqlServer("Server=LAPTOP-DOP3PHE3;Database=learnNowDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        optionBuilder.UseSqlServer("Server=DRAQUEL;Database=learnNowDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
         return new LearnNowDB(optionBuilder.Options);
 

@@ -10,7 +10,7 @@ namespace LearnNow.Class
     public interface ICourseRepository
     {
         Task<int> Create(CourseModel course);
-        void Deleat(int id);
+        void Delete(int id);
         Task<List<CourseModel>> GetAll();
         Task<CourseModel> GetById(int id);  
         void Update(CourseModel course);
