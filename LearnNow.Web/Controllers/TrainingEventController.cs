@@ -1,4 +1,4 @@
-﻿using AspNetCore;
+﻿using Microsoft.AspNetCore;
 using LearnNow.Class;
 using LearnNow.Class.Models;
 using Microsoft.AspNetCore.Http;
@@ -30,8 +30,8 @@ namespace LearnNow.Web.Controllers
         // GET: TrainingEventController
         public async Task<ActionResult> Index()
         {
-            var lstTE = await trainingEventRepo.GetAll();
-            return View(lstTE.AsEnumerable());
+            var lstTe = await trainingEventRepo.GetAll();
+            return View(lstTe.AsEnumerable());
         }
 
         // GET: TrainingEventController/Details/5
@@ -46,7 +46,7 @@ namespace LearnNow.Web.Controllers
             ViewBag.Courses = new SelectList(await courseRG.GetAll(), "Id", "Title");
             ViewBag.Locations = new SelectList(await locationRG.GetAll(), "Id", "Name");
             ViewBag.Teachers = new SelectList(await teacherRG.GetAll(), "Id", "Name");
-            var model = new TrainingEventModel
+            var model = new TrainingEventModel()
             {
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now,
@@ -67,7 +67,7 @@ namespace LearnNow.Web.Controllers
                 te.LocationId = int.Parse(formCollection["LocationId"]!);
                 te.TeacherId = int.Parse(formCollection["TeacherId"]!);
                 te.StartDate = DateTime.Parse(formCollection["StartDate"]!);
-                te.EndDate = DateTime.Parse(formCollection["EndtDate"]!);
+                te.EndDate = DateTime.Parse(formCollection["EndDate"]!);
 
                 await trainingEventRepo.Create(te);
                 return RedirectToAction(nameof(Index));
@@ -78,9 +78,14 @@ namespace LearnNow.Web.Controllers
                 ViewBag.Locations = new SelectList(await locationRG.GetAll(), "Id", "Name");
                 ViewBag.Teachers = new SelectList(await teacherRG.GetAll(), "Id", "Name");
 
-                ModelState.AddModelError(string.Empty, ex.Message);
+                var model = new TrainingEventModel()
+                {
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now
+                };
 
-                return View(te);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View();
             }
         }
 

@@ -1,5 +1,6 @@
 using LearnNow;
 using LearnNow.Class;
+using LearnNow.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped(typeof(IRepositoryGeneric<>), typeof(RepositoryGeneric<>));
 builder.Services.AddScoped<TrainingEventRepository>();
+builder.Services.AddControllersWithViews();
 
 //Configura DBContext para la base de datos
 builder.Services.AddDbContext<LearnNowDB>(options => options.UseSqlServer
@@ -30,6 +32,12 @@ builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await RoleInitializer.SeedRoleAsync(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
